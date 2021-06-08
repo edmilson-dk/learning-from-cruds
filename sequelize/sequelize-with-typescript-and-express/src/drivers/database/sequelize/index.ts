@@ -1,7 +1,21 @@
 import { Sequelize } from 'sequelize';
-import config from "./config";
+import dotenv from "dotenv";
+dotenv.config();
 
 const env = process.env.NODE_ENV || "development";
-const url = config.url || process.env.DATABSE_URL;
+const config = require("./config")[env];
 
-const sequelize = new Sequelize(url, config);
+const sequelize = new Sequelize(config);
+
+const db = {
+  sequelize,
+  Sequelize,
+};
+
+Object.values(db).forEach((model: any) => {
+  if (model.associate) {
+    model.associate(db);
+  }
+});
+
+export default db;
