@@ -6,7 +6,10 @@
   "author": "edmilson-dk <droidvidaboa@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "npx ts-node-dev --respawn --pretty --transpile-only src/main/server.ts"
+    "build": "tsc",
+    "start": "NODE_PATH=./dist node dist/src/main/server.js",
+    "dev": "NODE_PATH=./ npx ts-node-dev --respawn --pretty --transpile-only src/main/server.ts",
+    "postinstall": "npm run sequelize-cli db:migrate && npm run build"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
