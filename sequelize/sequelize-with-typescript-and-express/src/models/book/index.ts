@@ -1,4 +1,4 @@
-import { Model, DataTypes } from "sequelize/types";
+import { Model, DataTypes } from "sequelize";
 
 import db from "src/drivers/database/sequelize";
 import { AddBookDto, StoredBookDto } from "src/dtos/book";
