@@ -18,4 +18,4 @@ Object.values(db).forEach((model: any) => {
   }
 });
 
-export default db;
+export = db;
