@@ -1,16 +1,20 @@
 import { Model, DataTypes } from "sequelize/types";
 
 import db from "src/drivers/database/sequelize";
-import { AddBookDto, BookAtributtes } from "src/dtos/book";
+import { AddBookDto, StoredBookDto } from "src/dtos/book";
 
-export class BookInstance extends Model<BookAtributtes, AddBookDto> {};
+class BookModel extends Model<StoredBookDto, AddBookDto> {};
 
-BookInstance.init({
+BookModel.init({
   id: {
     allowNull: false,
     primaryKey: true,
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
+  },
+  user_id: {
+    allowNull: false,
+    type: DataTypes.UUID,
   },
   title:{ 
     allowNull: false,
@@ -32,6 +36,14 @@ BookInstance.init({
     allowNull: false,
     type: DataTypes.STRING,
   },
+  likes: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+  },
+  dislikes: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+  },
   created_at: {
     allowNull: false,
     type: DataTypes.DATE,
@@ -46,3 +58,5 @@ BookInstance.init({
   sequelize: db.sequelize,
   tableName: "books",
 });
+
+export = BookModel;

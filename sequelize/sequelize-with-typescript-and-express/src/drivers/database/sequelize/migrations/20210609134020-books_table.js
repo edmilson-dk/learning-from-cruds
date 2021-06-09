@@ -9,15 +9,19 @@ module.exports = {
         type: Sequelize.DataTypes.UUID,
         defaultValue: Sequelize.DataTypes.UUIDV4,
       },
-      title:{ 
+      user_id: {
+        allowNull: false,
+        type: Sequelize.DataTypes.UUID,
+      },
+      title: { 
         allowNull: false,
         type: Sequelize.DataTypes.STRING,
       },
-      author:{ 
+      author: { 
         allowNull: false,
         type: Sequelize.DataTypes.STRING,
       },
-      released:{ 
+      released: { 
         allowNull: false,
         type: Sequelize.DataTypes.STRING,
       },
@@ -25,9 +29,17 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DataTypes.INTEGER,
       },
-      image_name:{ 
+      image_name: { 
         allowNull: false,
         type: Sequelize.DataTypes.STRING,
+      },
+      likes: {
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER,
+      },
+      dislikes: {
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER,
       },
       created_at: {
         allowNull: false,
