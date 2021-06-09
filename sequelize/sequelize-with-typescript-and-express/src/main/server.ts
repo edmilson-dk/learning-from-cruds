@@ -1,15 +1,12 @@
-import express from "express";
-import db from "../drivers/database/sequelize";
+import db from "src/drivers/database/sequelize";
+import app from "./app";
 
-const app = express();
+const port = Number(process.env.PORT) || 8080;
 
-app.use("/teste", (req, res) => res.json({ ok: true }));
-
-db.sequelize
-.sync()
-.then(() => console.log("connected to db"))
-.catch(() => {
+db.sequelize.sync()
+  .then(() => console.log("connected to db"))
+  .catch(() => {
     throw "error";
-});
+  });
 
-app.listen(5000, () => console.log('server at running in port 5000'));
+app.listen(port, () => console.log(`Server is running at port ${port}`));
