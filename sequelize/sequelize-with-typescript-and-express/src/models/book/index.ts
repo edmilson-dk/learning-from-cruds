@@ -5,13 +5,7 @@ import { AddBookDto, StoredBookDto } from "src/dtos/book";
 
 class BookModel extends Model<StoredBookDto, AddBookDto> {};
 
-BookModel.init({
-  id: {
-    allowNull: false,
-    primaryKey: true,
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-  },
+export const Book = db.sequelize.define<BookModel, AddBookDto>("books", {
   user_id: {
     allowNull: false,
     type: DataTypes.UUID,
@@ -43,20 +37,5 @@ BookModel.init({
   dislikes: {
     allowNull: false,
     type: DataTypes.INTEGER,
-  },
-  created_at: {
-    allowNull: false,
-    type: DataTypes.DATE,
-    defaultValue: new Date(),
-  },
-  updated_at: {
-    allowNull: false,
-    type: DataTypes.DATE,
-    defaultValue: new Date(),
   }
-}, {
-  sequelize: db.sequelize,
-  tableName: "books",
 });
-
-export = BookModel;
