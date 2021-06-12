@@ -3,7 +3,7 @@ import sharp from "sharp";
 import path from "path";
 import { Express } from "express";
 
-import { IDiskImageStorage } from "src/application/repositories/disk-image-storage";
+import { IDiskImageStorage, resizedPathTypes } from "src/application/repositories/disk-image-storage";
 
 export class SharpDiskImageStorage implements IDiskImageStorage {
   async resizeImage(file: Express.Multer.File, size: number): Promise<Buffer> {
@@ -14,11 +14,11 @@ export class SharpDiskImageStorage implements IDiskImageStorage {
       .toBuffer();
   }
 
-  saveImage(imageBuffer: Buffer, file: Express.Multer.File): string {
+  saveImage(imageBuffer: Buffer, file: Express.Multer.File, resizedPath: resizedPathTypes): string {
     const newFilename = file.filename.split(".")[0] + ".webp";
     const pathArray = file.path.split("/");
     pathArray.pop();
-    const newPath = `${pathArray.join("/")}/resized/${newFilename}`;
+    const newPath = `${pathArray.join("/")}/resized/${resizedPath}/${newFilename}`;
 
     fs.access(file.path, (err) => {
       if (!err) 
