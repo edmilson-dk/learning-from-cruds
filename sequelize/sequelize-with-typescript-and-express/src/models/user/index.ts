@@ -4,9 +4,15 @@ import db from "src/drivers/database/sequelize";
 import { AddUserDto, StoredUserDto } from "src/domain/dtos/user";
 import { Book } from "../book";
 
-class UserModel extends Model<StoredUserDto, AddUserDto> {};
+export class User extends Model<StoredUserDto, AddUserDto> {};
 
-export const User = db.sequelize.define<UserModel, AddUserDto>('users', {
+User.init({
+  id: {
+    allowNull: false,
+    primaryKey: true,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+  },
   name: { 
     allowNull: false,
     type: DataTypes.STRING,
@@ -26,8 +32,21 @@ export const User = db.sequelize.define<UserModel, AddUserDto>('users', {
   bio: {
     allowNull: false,
     type: DataTypes.STRING,
+  },
+  created_at: {
+    allowNull: false,
+    type: DataTypes.DATE,
+    defaultValue: new Date(),
+  },
+  updated_at: {
+    allowNull: false,
+    type: DataTypes.DATE,
+    defaultValue: new Date(),
   }
-});
+}, {
+  sequelize: db.sequelize,
+  tableName: "users",
+})
 
 User.hasMany(Book, {
   sourceKey: "id",
