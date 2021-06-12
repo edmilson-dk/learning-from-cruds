@@ -1,5 +1,5 @@
 import { IUserRepository } from "src/application/repositories/user";
-import { AddUserDto, StoredUserDto } from "src/dtos/user";
+import { AddUserDto, StoredUserDto } from "src/domain/dtos/user";
 import { User } from "src/models/user";
 
 export class UserSequelizePgRepository implements IUserRepository {

@@ -1,6 +1,6 @@
 import { IUserRepository } from "src/application/repositories/user";
 import { IUserUseCases } from "src/domain/use-cases/user";
-import { AddUserDto, StoredUserDto } from "src/dtos/user";
+import { AddUserDto, StoredUserDto } from "src/domain/dtos/user";
 
 export class UserServices implements IUserUseCases {
   private readonly userRepository: IUserRepository;

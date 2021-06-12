@@ -1,7 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 
 import db from "src/drivers/database/sequelize";
-import { AddBookDto, StoredBookDto } from "src/dtos/book";
+import { AddBookDto, StoredBookDto } from "src/domain/dtos/book";
 
 class BookModel extends Model<StoredBookDto, AddBookDto> {};
 

@@ -1,4 +1,4 @@
-import { AddUserDto, StoredUserDto } from "src/dtos/user";
+import { AddUserDto, StoredUserDto } from "src/domain/dtos/user";
 
 export interface IUserUseCases {
   addUser: (data: AddUserDto) => Promise<void>;
