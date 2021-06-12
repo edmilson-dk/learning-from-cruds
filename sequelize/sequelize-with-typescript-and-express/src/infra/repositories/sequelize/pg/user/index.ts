@@ -1,10 +1,12 @@
 import { IUserRepository } from "src/application/repositories/user";
-import { AddUserDto, StoredUserDto } from "src/domain/dtos/user";
+import { AddUserDto, PublicUserDto, StoredUserDto } from "src/domain/dtos/user";
+import { UserMapper } from "src/domain/mappers/user";
 import { User } from "src/models/user";
 
 export class UserSequelizePgRepository implements IUserRepository {
-  async addUser(data: AddUserDto): Promise<void> {
-    await User.create(data);
+  async addUser(data: AddUserDto): Promise<PublicUserDto> {
+    const row = await User.create(data);
+    return UserMapper.toPublicDto(row.get());
   }
 
   async findUser(userId: string): Promise<StoredUserDto | null> {

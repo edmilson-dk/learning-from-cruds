@@ -1,5 +1,6 @@
 import fs from "fs";
 import sharp from "sharp";
+import path from "path";
 import { Express } from "express";
 
 import { IDiskImageStorage } from "src/application/repositories/disk-image-storage";
@@ -29,5 +30,10 @@ export class SharpDiskImageStorage implements IDiskImageStorage {
     });
 
     return newFilename;
+  }
+
+  deleteNotResizedImage(imageName: string) {
+    const imagePath = `${path.resolve(__dirname, '..', '..', "..", "..", 'uploads')}/${imageName}`;
+    fs.unlink(imagePath, (err) => { if (err) console.log(err)});
   }
 }

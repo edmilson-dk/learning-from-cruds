@@ -6,6 +6,14 @@ export type AddUserDto = {
   avatar: string;
 }
 
+export type PublicUserDto = {
+  name: string;
+  email: string;
+  bio: string;
+  avatar: string;
+  id: string;
+}
+
 export interface StoredUserDto {
   name: string;
   email: string;
