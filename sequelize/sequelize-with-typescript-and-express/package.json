@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start": "NODE_PATH=./dist node dist/src/main/server.js",
+    "start": "node dist/create-folders.js && NODE_PATH=./dist node dist/src/main/server.js",
     "dev": "NODE_PATH=./ npx ts-node-dev --respawn --pretty --transpile-only src/main/server.ts",
     "__postinstall": "npm run sequelize-cli db:migrate && npm run build"
   },
