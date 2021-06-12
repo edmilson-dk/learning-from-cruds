@@ -39,7 +39,7 @@ export class AddUserController implements BaseController {
       });
 
       const imageBuffer = await this.diskImageStorage.resizeImage(httpRequest.rest.file, 300);
-      await this.diskImageStorage.saveImage(imageBuffer, httpRequest.rest.file);
+      await this.diskImageStorage.saveImage(imageBuffer, httpRequest.rest.file, "user");
       this.diskImageStorage.deleteNotResizedImage(filename);
 
       const token = createJWT(email, data.id, "3d");
