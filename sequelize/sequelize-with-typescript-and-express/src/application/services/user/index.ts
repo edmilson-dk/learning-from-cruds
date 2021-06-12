@@ -16,8 +16,8 @@ export class UserServices implements IUserUseCases {
       throw new Error("User alredy exists");
     }
 
-    await this.userRepository.addUser({ name, password, avatar, email, bio });
-    return;
+    const data = await this.userRepository.addUser({ name, password, avatar, email, bio });
+    return data;
   }
 
   async findUser(userId: string): Promise<StoredUserDto | null> {
