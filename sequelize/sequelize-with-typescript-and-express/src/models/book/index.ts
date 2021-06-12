@@ -3,22 +3,32 @@ import { Model, DataTypes } from "sequelize";
 import db from "src/drivers/database/sequelize";
 import { AddBookDto, StoredBookDto } from "src/domain/dtos/book";
 
-class BookModel extends Model<StoredBookDto, AddBookDto> {};
+export class Book extends Model<StoredBookDto, AddBookDto> {};
 
-export const Book = db.sequelize.define<BookModel, AddBookDto>("books", {
+Book.init({
+  id: {
+    allowNull: false,
+    primaryKey: true,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+  },
   user_id: {
     allowNull: false,
     type: DataTypes.UUID,
+    references: {
+      model: 'users',
+      key: 'id'
+    },
   },
-  title:{ 
+  title: { 
     allowNull: false,
     type: DataTypes.STRING,
   },
-  author:{ 
+  author: { 
     allowNull: false,
     type: DataTypes.STRING,
   },
-  released:{ 
+  released: { 
     allowNull: false,
     type: DataTypes.STRING,
   },
@@ -26,7 +36,7 @@ export const Book = db.sequelize.define<BookModel, AddBookDto>("books", {
     allowNull: false,
     type: DataTypes.INTEGER,
   },
-  image_name:{ 
+  image_name: { 
     allowNull: false,
     type: DataTypes.STRING,
   },
@@ -37,5 +47,18 @@ export const Book = db.sequelize.define<BookModel, AddBookDto>("books", {
   dislikes: {
     allowNull: false,
     type: DataTypes.INTEGER,
+  },
+  created_at: {
+    allowNull: false,
+    type: DataTypes.DATE,
+    defaultValue: new Date(),
+  },
+  updated_at: {
+    allowNull: false,
+    type: DataTypes.DATE,
+    defaultValue: new Date(),
   }
+}, {
+  tableName: "books",
+  sequelize: db.sequelize,
 });
