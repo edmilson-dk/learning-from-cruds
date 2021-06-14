@@ -1,5 +1,6 @@
 import { IDiskImageStorage } from "src/application/repositories/disk-image-storage";
 import { IUserUseCases } from "src/domain/use-cases/user";
+import { isInvalidRegisterUserData } from "src/domain/validations/user";
 import { encryptData } from "src/infra/security/bcrypt";
 import { createJWT } from "src/infra/security/jwt";
 import { badRequest, ok, serverError } from "../../http/http-response-type";
@@ -24,6 +25,12 @@ export class AddUserController implements BaseController {
 
       if (!name || !email || !password || !bio) {
         return badRequest(new MissingParamError(), 401);
+      }
+
+      const validateResult = isInvalidRegisterUserData({ bio, email, name, password });
+      
+      if (validateResult) {
+        return badRequest(new Error(validateResult.message), 401);
       }
 
       if (!filename) {
