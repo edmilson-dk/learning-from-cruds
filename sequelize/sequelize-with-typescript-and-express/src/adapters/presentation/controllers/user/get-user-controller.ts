@@ -1,4 +1,5 @@
 import { IUserUseCases } from "src/domain/use-cases/user";
+import { isInvalidLoginUserData } from "src/domain/validations/user";
 import { isValidHash } from "src/infra/security/bcrypt";
 import { createJWT } from "src/infra/security/jwt";
 import { badRequest, ok, serverError } from "../../http/http-response-type";
@@ -21,6 +22,12 @@ export class GetUserController implements BaseController {
         return badRequest(new MissingParamError(), 401);
       }
 
+      const validateResult = isInvalidLoginUserData({ email, password });
+
+      if (validateResult) {
+        return badRequest(new Error(validateResult.message), 401);
+      }
+      
       const user = await this.userServices.getUser(email, password);
 
       if (!user) {
