@@ -9,19 +9,7 @@ export class UserSequelizePgRepository implements IUserRepository {
     return UserMapper.toPublicDto(row.get());
   }
 
-  async findUser(userId: string): Promise<StoredUserDto | null> {
-    const userOrNull = await User.findOne({
-      where: { id: userId },
-    });
-
-    if (!userOrNull) return null;
-    
-    const data = userOrNull.get();
-
-    return data;
-  }
-
-  async findUserByEmail(email: string): Promise<StoredUserDto | null> {
+  async getUser(email: string): Promise<StoredUserDto | null> {
     const userOrNull = await User.findOne({
       where: { email: email },
     });
