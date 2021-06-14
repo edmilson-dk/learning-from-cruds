@@ -11,7 +11,9 @@ export const ok = (data: any, statusCode = 200): HttpResponse => ({
   body: data
 });
 
-export const serverError = (reason: string): HttpResponse => ({
-  statusCode: 500,
-  body: reason,
+type ServerErrorProps = { reason: string, statusCode: number };
+
+export const serverError = (data: ServerErrorProps): HttpResponse => ({
+  statusCode: data.statusCode,
+  body: data.reason,
 });

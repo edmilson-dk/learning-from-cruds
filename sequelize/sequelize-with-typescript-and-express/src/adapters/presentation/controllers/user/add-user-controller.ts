@@ -26,28 +26,20 @@ export class AddUserController implements BaseController {
       if (!name || !email || !password || !bio) {
         return badRequest(new MissingParamError(), 401);
       }
-
-      const validateResult = isInvalidRegisterUserData({ bio, email, name, password });
       
-      if (validateResult) {
-        return badRequest(new Error(validateResult.message), 401);
-      }
-
       if (!filename) {
         return badRequest(new Error("Image is missing"), 401);
       }
 
       const [ originaFileName ] = filename.split('.');
       const imageName = `${originaFileName}.webp`;
-  
-      const hashedPassword = await encryptData(password, 10);
 
       const data = await this.userServices.addUser({
         avatar: imageName,
         bio,
         email,
         name,
-        password: hashedPassword,
+        password,
       });
 
       const imageBuffer = await this.diskImageStorage.resizeImage(httpRequest.rest.file, 300);
@@ -59,7 +51,13 @@ export class AddUserController implements BaseController {
       return ok({...data, token}, 201);
     } catch (err) {
       this.diskImageStorage.deleteNotResizedImage(filename);
-      return serverError(err.message || "Interval server error");
+      return serverError({ 
+        reason: err.message,
+        statusCode: 401
+      } || { 
+        reason: "Interval server error", 
+        statusCode: 500 
+      });
     }
   }
 }

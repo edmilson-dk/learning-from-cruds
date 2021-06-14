@@ -21,12 +21,6 @@ export class GetUserController implements BaseController {
         return badRequest(new MissingParamError(), 401);
       }
 
-      const validateResult = isInvalidLoginUserData({ email, password });
-
-      if (validateResult) {
-        return badRequest(new Error(validateResult.message), 401);
-      }
-      
       const user = await this.userServices.getUser(email, password);
 
       if (!user) {
@@ -37,7 +31,14 @@ export class GetUserController implements BaseController {
 
       return ok({...user, token }, 200);
     } catch (err) {
-      return serverError(err.message || "Interval server error");
+      return serverError(
+        { reason: err.message,
+          statusCode: 401
+        } || { 
+          reason: "Interval server error", 
+          statusCode: 500 
+        }
+      );
     }
   }
 }
