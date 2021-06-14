@@ -1,5 +1,4 @@
 import { IUserUseCases } from "src/domain/use-cases/user";
-import { isInvalidLoginUserData } from "src/domain/validations/user";
 import { createJWT } from "src/infra/security/jwt";
 import { badRequest, ok, serverError } from "../../http/http-response-type";
 import { HttpRequest, HttpResponse } from "../../http/ports/http";
