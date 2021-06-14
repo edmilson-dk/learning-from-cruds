@@ -1,21 +1,15 @@
 import Joi from "joi";
-
-type RegisterUserData = {
-  name: string;
-  email: string;
-  password: string;
-  bio: string;
-}
+import { AddUserDto } from "src/domain/dtos/user";
 
 type LoginUserData = {
   password: string;
   email: string;
 }
 
-export function isInvalidRegisterUserData({ name, email, password, bio }: RegisterUserData) {
-  const schema = Joi.object<RegisterUserData>({
+export function isInvalidRegisterUserData({ name, email, password, bio }: AddUserDto) {
+  const schema = Joi.object<AddUserDto>({
     name: Joi.string().min(3).max(40).required(),
-    email: Joi.string().email().regex(new RegExp( /^[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/)).required(),
+    email: Joi.string().email().regex(new RegExp(/^[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/)).required(),
     bio: Joi.string().min(10).max(255).required(),
     password: Joi.string().min(8).max(36)
   });
@@ -26,7 +20,7 @@ export function isInvalidRegisterUserData({ name, email, password, bio }: Regist
 }
 
 export function isInvalidLoginUserData({ email, password }: LoginUserData) {
-  const schema = Joi.object<RegisterUserData>({
+  const schema = Joi.object<LoginUserData>({
     email: Joi.string().email().regex(new RegExp( /^[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/)).required(),
     password: Joi.string().min(8).max(36)
   });
