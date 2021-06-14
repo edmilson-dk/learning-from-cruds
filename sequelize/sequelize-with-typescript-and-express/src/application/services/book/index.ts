@@ -1,6 +1,7 @@
 import { IBookRepository } from "src/application/repositories/book";
 import { AddBookDto, PublicBookDto, PublicUserBookDto } from "src/domain/dtos/book";
 import { IBookUseCases } from "src/domain/use-cases/book";
+import { isInvalidBookCreateData } from "src/domain/validations/book";
 
 export class BookServices implements IBookUseCases {
   private readonly bookRepository: IBookRepository;
@@ -10,6 +11,12 @@ export class BookServices implements IBookUseCases {
   }
 
   async addBook(data: AddBookDto): Promise<PublicBookDto> {
+    const validateResult = isInvalidBookCreateData(data);
+
+    if (validateResult) {
+      throw new Error(validateResult.message);
+    }
+    
     const book = await this.bookRepository.addBook(data);
     return book;
   }
