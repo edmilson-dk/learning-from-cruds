@@ -5,6 +5,7 @@ import { createJWT } from "src/infra/security/jwt";
 import { badRequest, ok, serverError } from "../../http/http-response-type";
 import { HttpRequest, HttpResponse } from "../../http/ports/http";
 import { BaseController } from "../baseControler";
+import { MissingParamError } from "../errors/missing-params-error";
 
 export class AddUserController implements BaseController {
   private readonly userServices: IUserUseCases;
@@ -20,6 +21,10 @@ export class AddUserController implements BaseController {
 
     try {
       const { bio, email, name, password } = httpRequest.body;
+
+      if (!name || !email || !password || !bio) {
+        return badRequest(new MissingParamError(), 401);
+      }
 
       if (!filename) {
         return badRequest(new Error("Image is missing"), 401);
@@ -42,12 +47,12 @@ export class AddUserController implements BaseController {
       await this.diskImageStorage.saveImage(imageBuffer, httpRequest.rest.file, "user");
       this.diskImageStorage.deleteNotResizedImage(filename);
 
-      const token = createJWT(email, data.id, "3d");
+      const token = createJWT(email, data.id, process.env.TOKEN_EXPIRES as string);
 
       return ok({...data, token}, 201);
     } catch (err) {
       this.diskImageStorage.deleteNotResizedImage(filename);
-      return serverError("Interval server error");
+      return serverError(err.message || "Interval server error");
     }
   }
 }
