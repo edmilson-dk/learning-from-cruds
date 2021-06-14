@@ -3,5 +3,5 @@ import { AddBookDto, PublicBookDto, PublicUserBookDto } from "src/domain/dtos/bo
 export interface IBookRepository {
   addBook: (data: AddBookDto) => Promise<PublicBookDto>;
   getOneBook: (userId: string, bookId: string) => Promise<PublicUserBookDto>;
-  //getAllBooks: (userId: string) => Promise<PublicBookDto[]>;
+  getAllBooks: (userId: string) => Promise<PublicUserBookDto>;
 }
