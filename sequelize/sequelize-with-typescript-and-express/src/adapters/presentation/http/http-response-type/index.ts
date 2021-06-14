@@ -13,5 +13,5 @@ export const ok = (data: any, statusCode = 200): HttpResponse => ({
 
 export const serverError = (reason: string): HttpResponse => ({
   statusCode: 500,
-  body: new ServerError(reason),
+  body: reason,
 });
