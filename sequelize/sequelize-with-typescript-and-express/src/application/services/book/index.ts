@@ -1,5 +1,6 @@
 import { IBookRepository } from "src/application/repositories/book";
 import { IDataCacheRepository } from "src/application/repositories/data-cache";
+import { constants } from "src/constants";
 import { AddBookDto, PublicBookDto, PublicUserBookDto } from "src/domain/dtos/book";
 import { BookMapper } from "src/domain/mappers/book";
 import { IBookUseCases } from "src/domain/use-cases/book";
@@ -26,21 +27,27 @@ export class BookServices implements IBookUseCases {
   }
 
   async getOneBook(userId: string, bookId: string): Promise<PublicUserBookDto> {
+    const cached = await this.dataCacheRepository.getCache(constants.oneBookCacheKey);
+
+    if (cached) {
+      return BookMapper.toPublicUserDto(cached);
+    }
+
     const book = await this.bookRepository.getOneBook(userId, bookId);
+    this.dataCacheRepository.setCache(constants.oneBookCacheKey, book, constants.cacheExpires);
+
     return book;
   }
 
   async getAllBooks(userId: string): Promise<PublicUserBookDto> {
-    const cached = await this.dataCacheRepository.getCache("books");
+    const cached = await this.dataCacheRepository.getCache(constants.allBooksCacheKey);
 
     if (cached) {
-      console.log("cache")
       return BookMapper.toPublicUserDto(cached);
     }
 
-    console.log("database")
     const books = await this.bookRepository.getAllBooks(userId);
-    this.dataCacheRepository.setCache("books", books, 20);
+    this.dataCacheRepository.setCache(constants.allBooksCacheKey, books, constants.cacheExpires);
 
     return books;
   }
