@@ -6,8 +6,8 @@ type LoginUserData = {
   email: string;
 }
 
-export function isInvalidRegisterUserData({ name, email, password, bio }: AddUserDto) {
-  const schema = Joi.object<AddUserDto>({
+export function isInvalidRegisterUserData({ name, email, password, bio }: Omit<AddUserDto, "avatar">) {
+  const schema = Joi.object<Omit<AddUserDto, "avatar">>({
     name: Joi.string().min(3).max(40).required(),
     email: Joi.string().email().regex(new RegExp(/^[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/)).required(),
     bio: Joi.string().min(10).max(255).required(),
