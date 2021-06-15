@@ -51,4 +51,9 @@ export class BookServices implements IBookUseCases {
 
     return books;
   }
+
+  async deleteBook(userId: string, bookId: string): Promise<string | null> {
+    const imageNameOrNull = await this.bookRepository.deleteBook(userId, bookId);
+    return imageNameOrNull;
+  }
 }
