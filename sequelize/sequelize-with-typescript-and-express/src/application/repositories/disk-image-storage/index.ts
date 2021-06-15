@@ -6,4 +6,5 @@ export interface IDiskImageStorage {
   resizeImage: (file: Express.Multer.File, size: number) => Promise<Buffer>;
   saveImage: (imageBuffer: Buffer, file: Express.Multer.File, resizedPath: resizedPathTypes) => string;
   deleteNotResizedImage: (imageName: string) => void;
+  deleteResizedImage: (imageName: string, pathFile: resizedPathTypes) => void;
 }
