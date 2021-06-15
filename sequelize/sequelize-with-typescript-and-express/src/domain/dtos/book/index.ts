@@ -9,6 +9,13 @@ export type AddBookDto = {
   user_id: string;
 }
 
+export type UpdateBookDto = {
+  title?: string;
+  author?: string;
+  released?: string;
+  pages_total?: number;
+}
+
 export type PublicBookDto = {
   title: string;
   author: string;
