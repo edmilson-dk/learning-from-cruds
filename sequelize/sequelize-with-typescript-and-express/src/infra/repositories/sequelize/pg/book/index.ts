@@ -1,5 +1,5 @@
 import { IBookRepository } from "src/application/repositories/book";
-import { AddBookDto, PublicBookDto, PublicUserBookDto } from "src/domain/dtos/book";
+import { AddBookDto, PublicBookDto, PublicUserBookDto, UpdateBookDto } from "src/domain/dtos/book";
 import { BookMapper } from "src/domain/mappers/book";
 
 import { Book } from "src/models/book";
@@ -43,4 +43,29 @@ export class BookSequelizePgRepository implements IBookRepository {
 
     return BookMapper.toPublicUserDto(row);
   }
-}
+
+  async updateBook(userId: string, bookId: string, data: UpdateBookDto): Promise<boolean> {
+    const updated = await Book.findOne({
+      where: { user_id: userId, id: bookId },
+    });
+
+    if (updated) {
+      updated.update(data);
+      return true;
+    }
+
+    return false;
+  }
+
+  async deleteBook(userId: string, bookId: string) {
+    const deleted = await Book.destroy({
+      where: { user_id: userId, id: bookId }
+    });
+
+    if (!deleted) {
+      return false;
+    } 
+
+    return true;
+  }
+ }
