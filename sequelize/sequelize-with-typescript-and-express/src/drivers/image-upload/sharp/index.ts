@@ -33,7 +33,12 @@ export class SharpDiskImageStorage implements IDiskImageStorage {
   }
 
   deleteNotResizedImage(imageName: string) {
-    const imagePath = `${path.resolve(__dirname, '..', '..', "..", "..", 'uploads')}`;
+    const imagePath = `${path.resolve(__dirname, "..", "..", "..", "..", "uploads")}`;
+    fs.unlink(`${imagePath}/${imageName}`, (err) => { if (err) console.log(err)});
+  }
+
+  deleteResizedImage(imageName: string, pathFile: resizedPathTypes) {
+    const imagePath = `${path.resolve(__dirname, "..", "..", "..", "..", "uploads", "resized", pathFile)}`;
     fs.unlink(`${imagePath}/${imageName}`, (err) => { if (err) console.log(err)});
   }
 }
