@@ -58,14 +58,17 @@ export class BookSequelizePgRepository implements IBookRepository {
   }
 
   async deleteBook(userId: string, bookId: string) {
-    const deleted = await Book.destroy({
-      where: { user_id: userId, id: bookId }
+    const book = await Book.findOne({
+      where: { user_id: userId, id: bookId },
     });
 
-    if (!deleted) {
-      return false;
-    } 
+    if (book) {
+      const { image_name } = book.get();
+      await book.destroy();
 
-    return true;
+      return image_name;
+    }
+
+    return null;
   }
  }
