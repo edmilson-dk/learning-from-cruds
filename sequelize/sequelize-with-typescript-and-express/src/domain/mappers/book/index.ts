@@ -1,4 +1,4 @@
-import { PublicBookDto, PublicUserBookDto } from "src/domain/dtos/book";
+import { PublicBookDto, PublicUserAllBooksDto, PublicUserBookDto } from "src/domain/dtos/book";
 
 export class BookMapper {
   static toPublicDto(data: any): PublicBookDto {
@@ -19,6 +19,15 @@ export class BookMapper {
     return {
       avatar: data.avatar,
       name: data.name,
+      books: data.books,
+    }
+  }
+
+  static toPublicUserAllBooksDto(data: any): PublicUserAllBooksDto {
+    return {
+      avatar: data.avatar,
+      name: data.name,
+      total: data.total,
       books: data.books,
     }
   }

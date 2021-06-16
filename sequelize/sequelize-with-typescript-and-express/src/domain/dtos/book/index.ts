@@ -34,6 +34,13 @@ export type PublicUserBookDto = {
   books: PublicBookDto[],
 }
 
+export type PublicUserAllBooksDto = {
+  avatar: string;
+  name: string;
+  total: number;
+  books: PublicBookDto[],
+}
+
 export type StoredBookDto = {
   id: string;
   created_at: string;

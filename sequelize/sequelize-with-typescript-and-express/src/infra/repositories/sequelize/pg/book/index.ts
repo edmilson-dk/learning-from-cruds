@@ -1,5 +1,6 @@
 import { IBookRepository } from "src/application/repositories/book";
-import { AddBookDto, PublicBookDto, PublicUserBookDto, UpdateBookDto } from "src/domain/dtos/book";
+import { constants } from "src/constants";
+import { AddBookDto, PublicBookDto, PublicUserAllBooksDto, PublicUserBookDto, UpdateBookDto } from "src/domain/dtos/book";
 import { BookMapper } from "src/domain/mappers/book";
 
 import { Book } from "src/models/book";
@@ -31,17 +32,27 @@ export class BookSequelizePgRepository implements IBookRepository {
     return BookMapper.toPublicUserDto(row);
   }
 
-  async getAllBooks(userId: string): Promise<PublicUserBookDto> {
+  async getAllBooks(userId: string, page: number): Promise<PublicUserAllBooksDto> {
+    const count = await Book.count({
+      where: { user_id: userId },
+    });
+
     const row = await User.findOne({
       where: { id: userId },
       attributes: ["avatar", "name"],
-      include: [{
-        association: "books",
-        attributes: this.bookAttributes,
-      }]
     });
 
-    return BookMapper.toPublicUserDto(row);
+    const books = await Book.findAll({
+      where: { user_id: userId },
+      offset: (page -1) * constants.booksDataLimit,
+      limit: constants.booksDataLimit,
+      attributes: this.bookAttributes,
+    });
+
+    const booksData = books.map(book => book.get());
+    const data = {...row?.get(), books: booksData };
+
+    return BookMapper.toPublicUserAllBooksDto({ total: count, ...data });
   }
 
   async updateBook(userId: string, bookId: string, data: UpdateBookDto): Promise<boolean> {

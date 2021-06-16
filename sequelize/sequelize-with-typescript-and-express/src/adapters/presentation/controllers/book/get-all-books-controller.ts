@@ -13,8 +13,9 @@ export class GetAllBooksController implements BaseController {
   async execute(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const userId = httpRequest.rest.userId;
+      const { page } = httpRequest.query;
 
-      const books = await this.bookServices.getAllBooks(userId);
+      const books = await this.bookServices.getAllBooks(userId, Number(page) || 1);
 
       return ok(books, 200);
     } catch (err) {

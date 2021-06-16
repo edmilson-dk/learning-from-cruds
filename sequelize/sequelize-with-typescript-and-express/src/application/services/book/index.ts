@@ -1,7 +1,7 @@
 import { IBookRepository } from "src/application/repositories/book";
 import { IDataCacheRepository } from "src/application/repositories/data-cache";
 import { constants } from "src/constants";
-import { AddBookDto, PublicBookDto, PublicUserBookDto, UpdateBookDto } from "src/domain/dtos/book";
+import { AddBookDto, PublicBookDto, PublicUserAllBooksDto, PublicUserBookDto, UpdateBookDto } from "src/domain/dtos/book";
 import { BookMapper } from "src/domain/mappers/book";
 import { IBookUseCases } from "src/domain/use-cases/book";
 import { isInvalidBookCreateData } from "src/domain/validations/book";
@@ -39,14 +39,14 @@ export class BookServices implements IBookUseCases {
     return book;
   }
 
-  async getAllBooks(userId: string): Promise<PublicUserBookDto> {
+  async getAllBooks(userId: string, page = 1): Promise<PublicUserAllBooksDto> {
     const cached = await this.dataCacheRepository.getCache(constants.allBooksCacheKey);
 
     if (cached) {
-      return BookMapper.toPublicUserDto(cached);
+      return BookMapper.toPublicUserAllBooksDto(cached);
     }
 
-    const books = await this.bookRepository.getAllBooks(userId);
+    const books = await this.bookRepository.getAllBooks(userId, page);
     this.dataCacheRepository.setCache(constants.allBooksCacheKey, books, constants.cacheExpires);
 
     return books;

@@ -1,5 +1,6 @@
 export const constants = {
   allBooksCacheKey: "allbooks",
   oneBookCacheKey: "onebook",
-  cacheExpires: 30,
+  cacheExpires: 5,
+  booksDataLimit: 10,
 }
