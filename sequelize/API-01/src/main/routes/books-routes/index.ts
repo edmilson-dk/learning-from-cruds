@@ -3,7 +3,6 @@ const multer = require("multer");
 
 import { multerConfig } from "src/drivers/image-upload/multer";
 import { RedisDataCache } from "src/infra/repositories/data-cache/redis";
-import { BookSequelizePgRepository } from "src/infra/repositories/sequelize/pg/book";
 import { adaptRoute } from "src/main/adapters/express-adapter";
 import { makeAddBookFactory, makeGetAllBooksFactory, makeGetOneBookFactory, makeUpdateBookFactory } from "src/main/factories/book";
 import { makeDeleteBookFactory } from "src/main/factories/book/delete-book-factory";
