@@ -1,3 +1,6 @@
+import { config } from "dotenv";
+config();
+
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
@@ -6,9 +9,7 @@ import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://dk:dk123456@cluster0.hjsen.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-    ),
+    MongooseModule.forRoot(process.env.MONGO_ATLAS_URL),
     UsersModule,
   ],
   controllers: [AppController],
